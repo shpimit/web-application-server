@@ -1,5 +1,6 @@
 package webserver;
 
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -12,15 +13,18 @@ public class WebServer {
 
     public static void main(String args[]) throws Exception {
         int port = 0;
+        InetAddress addr = InetAddress.getByName("127.0.0.1");
+        
         if (args == null || args.length == 0) {
             port = DEFAULT_PORT;
         } else {
-            port = Integer.parseInt(args[0]);
+            port = Integer.parseInt(args[1]);
+            addr = InetAddress.getByName(args[0]);
         }
 
         // 서버소켓을 생성한다. 웹서버는 기본적으로 8080번 포트를 사용한다.
 
-        try (ServerSocket listenSocket = new ServerSocket(port)) {
+        try (ServerSocket listenSocket = new ServerSocket(port,50,addr)) {
             log.info("Web Application Server started {} port.", port);
 
             // 클라이언트가 연결될때까지 대기한다.
